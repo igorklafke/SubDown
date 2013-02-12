@@ -42,6 +42,8 @@
             this.buttonBaixarLegenda = new System.Windows.Forms.Button();
             this.textBoxLog = new System.Windows.Forms.TextBox();
             this.adicionarPastaButton = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBoxTipoPesquisa = new System.Windows.Forms.ComboBox();
             this.contextMenuStripDiretorios.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,7 +84,7 @@
             // 
             this.treeViewLegendas.Location = new System.Drawing.Point(175, 10);
             this.treeViewLegendas.Name = "treeViewLegendas";
-            this.treeViewLegendas.Size = new System.Drawing.Size(468, 199);
+            this.treeViewLegendas.Size = new System.Drawing.Size(468, 201);
             this.treeViewLegendas.TabIndex = 4;
             this.treeViewLegendas.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewLegendas_NodeMouseDoubleClick);
             // 
@@ -115,20 +117,20 @@
             // adicionarToolStripMenuItem
             // 
             this.adicionarToolStripMenuItem.Name = "adicionarToolStripMenuItem";
-            this.adicionarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.adicionarToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
             this.adicionarToolStripMenuItem.Text = "Adicionar";
             this.adicionarToolStripMenuItem.Click += new System.EventHandler(this.adicionarToolStripMenuItem_Click);
             // 
             // deletarToolStripMenuItem
             // 
             this.deletarToolStripMenuItem.Name = "deletarToolStripMenuItem";
-            this.deletarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deletarToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
             this.deletarToolStripMenuItem.Text = "Deletar";
             this.deletarToolStripMenuItem.Click += new System.EventHandler(this.deletarToolStripMenuItem_Click);
             // 
             // buttonBaixarLegenda
             // 
-            this.buttonBaixarLegenda.Location = new System.Drawing.Point(12, 247);
+            this.buttonBaixarLegenda.Location = new System.Drawing.Point(12, 291);
             this.buttonBaixarLegenda.Name = "buttonBaixarLegenda";
             this.buttonBaixarLegenda.Size = new System.Drawing.Size(157, 24);
             this.buttonBaixarLegenda.TabIndex = 7;
@@ -142,12 +144,12 @@
             this.textBoxLog.Multiline = true;
             this.textBoxLog.Name = "textBoxLog";
             this.textBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxLog.Size = new System.Drawing.Size(468, 56);
+            this.textBoxLog.Size = new System.Drawing.Size(468, 100);
             this.textBoxLog.TabIndex = 8;
             // 
             // adicionarPastaButton
             // 
-            this.adicionarPastaButton.Location = new System.Drawing.Point(12, 218);
+            this.adicionarPastaButton.Location = new System.Drawing.Point(12, 262);
             this.adicionarPastaButton.Name = "adicionarPastaButton";
             this.adicionarPastaButton.Size = new System.Drawing.Size(157, 23);
             this.adicionarPastaButton.TabIndex = 9;
@@ -155,11 +157,34 @@
             this.adicionarPastaButton.UseVisualStyleBackColor = true;
             this.adicionarPastaButton.Click += new System.EventHandler(this.adicionarPastaButton_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 218);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(78, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Pastas Contém";
+            // 
+            // comboBoxTipoPesquisa
+            // 
+            this.comboBoxTipoPesquisa.FormattingEnabled = true;
+            this.comboBoxTipoPesquisa.Items.AddRange(new object[] {
+            "Séries",
+            "Filmes"});
+            this.comboBoxTipoPesquisa.Location = new System.Drawing.Point(12, 235);
+            this.comboBoxTipoPesquisa.Name = "comboBoxTipoPesquisa";
+            this.comboBoxTipoPesquisa.Size = new System.Drawing.Size(157, 21);
+            this.comboBoxTipoPesquisa.TabIndex = 11;
+            this.comboBoxTipoPesquisa.Text = "Séries";
+            // 
             // SubDownForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(655, 283);
+            this.ClientSize = new System.Drawing.Size(655, 323);
+            this.Controls.Add(this.comboBoxTipoPesquisa);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.adicionarPastaButton);
             this.Controls.Add(this.textBoxLog);
             this.Controls.Add(this.buttonBaixarLegenda);
@@ -197,6 +222,8 @@
         private System.Windows.Forms.ToolStripMenuItem deletarToolStripMenuItem;
         private System.Windows.Forms.TextBox textBoxLog;
         private System.Windows.Forms.Button adicionarPastaButton;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBoxTipoPesquisa;
     }
 }
 

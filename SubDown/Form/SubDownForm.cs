@@ -43,12 +43,16 @@ namespace SubDown
                 }
             }
 
+            comboBoxTipoPesquisa.SelectedIndex = Properties.Settings.Default.TipoPesquisa;
+
             LegendasTV downloader = new LegendasTV();
             loginThread = new Thread(downloader.ThreadlogIn);
             loginThread.Name = "Thread Login";
             loginThread.Start();
 
-            atualizarArquivos();
+            bool pesquisaFilmes = comboBoxTipoPesquisa.SelectedIndex == 1;
+
+            atualizarArquivos(pesquisaFilmes);
         }
 
         private void buttonBaixarLegenda_Click(object sender, EventArgs e)
@@ -58,10 +62,12 @@ namespace SubDown
                 Properties.Settings.Default.Usuario = textBoxUsuario.Text;
                 Properties.Settings.Default.Senha = textBoxSenha.Text;
 
-                atualizarArquivos();
-                buscaThread = new Thread(procurarLegendas);
-                buscaThread.Name = "Thread procurarLegendas";
-                buscaThread.Start();
+                bool pesquisaFilmes = comboBoxTipoPesquisa.SelectedIndex == 1;
+
+                atualizarArquivos(pesquisaFilmes);
+                ThreadStart buscaThread = delegate { procurarLegendas(pesquisaFilmes); };
+                new Thread(buscaThread).Start();
+
                 buscando = true;
             }
         }
@@ -112,23 +118,23 @@ namespace SubDown
             }
         }
 
-        private void procurarLegendas()
+        private void procurarLegendas(bool pesquisaFilmes)
         {
             foreach (TreeNode node in treeViewLegendas.Nodes)
             {
                 if (node == null || node.Text == "")
                     continue;
                 
-                procurarLegenda(node.Text, node.Index, node.Tag.ToString());
+                procurarLegenda(node.Text, node.Index, node.Tag.ToString(), pesquisaFilmes);
             }
 
             buscando = false;
         }
 
-        private void procurarLegenda(string name, int index, string toFile)
+        private void procurarLegenda(string name, int index, string toFile, bool filme)
         {
             LegendasTV legendasTV = new LegendasTV();
-            Release release = new Release(name);
+            Release release = new Release(name,!filme);
             //MessageBox.Show(release.print());
 
             string searchString = (release.title + " " + release.getEpisode()).Trim();
@@ -213,6 +219,8 @@ namespace SubDown
                 Properties.Settings.Default.Folders.Add(folder);
             }
 
+            Properties.Settings.Default.TipoPesquisa = comboBoxTipoPesquisa.SelectedIndex;
+
             Properties.Settings.Default.Save();
 
             if(loginThread != null)
@@ -224,26 +232,29 @@ namespace SubDown
 
         private void adicionarToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool pesquisaFilmes = comboBoxTipoPesquisa.SelectedIndex == 1;
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 listBoxDiretorios.Items.Add(dialog.SelectedPath);
             }
 
-            atualizarArquivos();
+            atualizarArquivos(pesquisaFilmes);
         }
 
         private void deletarToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool pesquisaFilmes = comboBoxTipoPesquisa.SelectedIndex == 1;
+
             if (listBoxDiretorios.SelectedIndex >= 0)
             {
                 listBoxDiretorios.Items.RemoveAt(listBoxDiretorios.SelectedIndex);
             }
 
-            atualizarArquivos();
+            atualizarArquivos(pesquisaFilmes);
         }
 
-        public void atualizarArquivos()
+        public void atualizarArquivos(bool pesquisaFilmes)
         {
             treeViewLegendas.Nodes.Clear();
 
@@ -253,7 +264,11 @@ namespace SubDown
 
                 foreach (string file in files)
                 {
-                    TreeNode node = treeViewLegendas.Nodes.Add(Path.GetFileNameWithoutExtension(file));
+                    TreeNode node = new TreeNode();
+                    if (pesquisaFilmes)
+                        node = treeViewLegendas.Nodes.Add(Path.GetFileName(Path.GetDirectoryName(file)));
+                    else
+                        node = treeViewLegendas.Nodes.Add(Path.GetFileNameWithoutExtension(file));
                     node.Tag = file;
                 }
             }
@@ -310,6 +325,7 @@ namespace SubDown
                 string file = node.Text;
                 string originalFile = node.Parent.Parent.Tag.ToString();
                 string destFile = Path.GetDirectoryName(originalFile) + "\\" + Path.GetFileNameWithoutExtension(originalFile) + ".srt";
+
                 addLog(subId + " " + ext + " " + file + " " + destFile);
                 
                 extrairLegenda(ext, subId, file, destFile);
@@ -319,13 +335,14 @@ namespace SubDown
 
         private void adicionarPastaButton_Click(object sender, EventArgs e)
         {
+            bool pesquisaFilmes = comboBoxTipoPesquisa.SelectedIndex == 1;
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 listBoxDiretorios.Items.Add(dialog.SelectedPath);
             }
 
-            atualizarArquivos();
+            atualizarArquivos(pesquisaFilmes);
         }
     }
 }

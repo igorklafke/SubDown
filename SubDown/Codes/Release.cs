@@ -29,7 +29,7 @@ namespace SubDown.Codes
         public string fileName = "";
         //public string md5hash = "";
 
-        public Release(string fileName, string md5hash = "")
+        public Release(string fileName, bool filtraNome = false, string md5hash = "")
         {
             this.fileName = this.cleanFileName(fileName);
             this.bluray = this.fileName.Contains("bluray");
@@ -53,7 +53,14 @@ namespace SubDown.Codes
                 this.group = split[split.Length - 1];
             }
 
-            string filtredName = this.filterFileName(this.fileName);
+            string filtredName;
+            if (filtraNome)
+                filtredName = this.filterFileName(this.fileName);
+            else if (this.group != "")
+                filtredName = this.fileName.Replace(this.group, "");
+            else
+                filtredName = this.fileName;
+
 
             string pattern = @"s(\d?\d)e(\d?\d)";
             Regex reg = new Regex(pattern);
